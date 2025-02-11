@@ -88,7 +88,7 @@ You can override styles using CSS or Tailwind classes. Example:
 
 ## 📌 License
 
-MIT License © 2024 Your Name/Company
+MIT License © 2025 Your Ahmed Sultan
 
 ---
 
