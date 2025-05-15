@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { cn } from "./lib/utils";
+import * as React from "react";
 
 export interface StarsProps {
   icon?: React.ElementType;
@@ -108,7 +109,15 @@ export const Stars = ({
               </span>
             )}
             {Icon ? (
-              <Icon />
+              React.cloneElement(<Icon />, {
+                width: size,
+                height: size,
+                fill: isHovered || isFilled ? activeColor : inactiveColor,
+                "aria-label": `Rate ${index + 1} star${
+                  index + 1 > 1 ? "s" : ""
+                }`,
+                role: "img",
+              })
             ) : (
               <svg
                 role="img"
