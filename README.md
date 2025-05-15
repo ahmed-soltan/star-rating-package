@@ -1,96 +1,187 @@
-# ⭐ Stars Rating Component
+# Stars Rating Component
 
-A customizable and accessible React star rating component with full keyboard navigation, tooltips, and various styling options.
+A highly customizable React star rating component with accessibility features, keyboard navigation, tooltips, and flexible styling options.
 
-## 🚀 Features
+## Features
 
-- **Customizable Star Count**: Define the number of stars (e.g., 5-star, 10-star rating, etc.).
-- **Controlled & Uncontrolled Modes**: Supports both `value` prop for controlled components and internal state for uncontrolled usage.
-- **Mouse Hover Effect**: Highlights stars on hover for better visual feedback.
-- **Customizable Colors**:
-  - `activeColor`: Color for selected stars
-  - `inactiveColor`: Color for unselected stars
-- **Flexible Layout**:
-  - `horizontal` (default) or `vertical` orientation
-  - Adjustable `gap` between stars
-- **Tooltips**:
-  - Show tooltips with custom labels on hover
-- **Disabled & Readonly Modes**: Prevents user interactions when `disabled` or `readonly` is set.
-- **Custom Styling**: Fully customizable with `className` and `size` props.
+- ⭐ Customizable number of stars
+- 🎨 Custom colors and sizing
+- 🖱️ Interactive hover effects
+- ⌨️ Full keyboard navigation support
+- 🔍 Accessibility features
+- 💭 Optional tooltips
+- ↕️ Vertical/Horizontal layout options
+- 🎯 Custom icon support
 
-## 📦 Installation
+## Installation
 
-```sh
-npm install @your-org/stars-rating
+```bash
+npm install stars-rating-sultan
 # or
-yarn add @your-org/stars-rating
+yarn add stars-rating-sultan
 ```
 
-## 🛠 Usage
+## Basic Usage
 
 ```tsx
-import { Stars } from "@your-org/stars-rating";
+import { Stars } from "stars-rating-sultan";
 import { useState } from "react";
 
-const MyComponent = () => {
-  const [rating, setRating] = useState(3);
+function MyComponent() {
+  const [rating, setRating] = useState(0);
 
   return (
     <Stars
       count={5}
       value={rating}
       onChange={setRating}
-      size={30}
-      activeColor="#FFC107"
-      inactiveColor="#E0E0E0"
+    />
+  );
+}
+```
+
+## Advanced Usage
+
+```tsx
+import { Stars } from "stars-rating-sultan";
+import { StarIcon } from "./icons"; // Your custom icon
+
+function AdvancedExample() {
+  return (
+    <Stars
+      count={5}
+      value={3}
+      onChange={(value) => console.log(`Selected ${value} stars`)}
+      size={32}
+      activeColor="#FFD700"
+      inactiveColor="#D3D3D3"
+      direction="horizontal"
       showTooltip
       tooltipLabels={["Poor", "Fair", "Good", "Very Good", "Excellent"]}
-      accessible
+      icon={StarIcon} // Optional custom icon component
+      gap={8}
     />
+  );
+}
+```
+
+### Form Usage Example
+
+```tsx
+import { Stars } from "@your-org/stars-rating";
+import { useForm } from "react-hook-form";
+
+interface ReviewFormData {
+  rating: number;
+  comment: string;
+}
+
+const ReviewForm = () => {
+  const { register, handleSubmit, setValue, watch } = useForm<ReviewFormData>({
+    defaultValues: {
+      rating: 0,
+      comment: "",
+    },
+  });
+
+  const onSubmit = (data: ReviewFormData) => {
+    console.log("Form submitted:", data);
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <div>
+        <label className="block mb-2">Rating</label>
+        <Stars
+          count={5}
+          value={watch("rating")}
+          onChange={(value) => setValue("rating", value)}
+          size={24}
+          showTooltip
+          tooltipLabels={["Poor", "Fair", "Good", "Very Good", "Excellent"]}
+        />
+      </div>
+      
+      <div>
+        <label htmlFor="comment" className="block mb-2">Comment</label>
+        <textarea
+          id="comment"
+          {...register("comment")}
+          className="w-full p-2 border rounded"
+        />
+      </div>
+
+      <button 
+        type="submit"
+        className="px-4 py-2 bg-blue-500 text-white rounded"
+      >
+        Submit Review
+      </button>
+    </form>
   );
 };
 ```
 
-## 📝 Props
+This example demonstrates:
+- Integration with React Hook Form
+- Form validation and submission
+- Combined usage with other form elements
+- Proper labeling and accessibility
 
-| Prop Name        | Type                    | Default      | Description |
-|-----------------|------------------------|-------------|-------------|
-| `count`         | `number`                | `5`         | Number of stars to display |
-| `value`         | `number`                | `0`         | Current rating value (controlled) |
-| `onChange`      | `(stars: number) => void` | `undefined` | Callback function when a star is selected |
-| `size`          | `number`                | `24`        | Star icon size (in px) |
-| `className`     | `string`                | `""`        | Additional CSS classes |
-| `readonly`      | `boolean`               | `false`     | Disables user interactions |
-| `gap`           | `number`                | `4`         | Space between stars |
-| `disabled`      | `boolean`               | `false`     | Disables the component |
-| `activeColor`   | `string`                | `"#FFC107"` | Color of selected stars |
-| `inactiveColor` | `string`                | `"#E0E0E0"` | Color of unselected stars |
-| `direction`     | `'horizontal' \| 'vertical'` | `'horizontal'` | Layout direction |
-| `showTooltip`   | `boolean`               | `false`     | Show tooltips on hover |
-| `tooltipLabels` | `string[]`              | `[]`        | Labels for tooltips |
 
-## 🎨 Customization
+## Props
 
-You can override styles using CSS or Tailwind classes. Example:
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `count` | `number` | Required | Number of stars to display |
+| `value` | `number` | `0` | Current rating value |
+| `onChange` | `(stars: number) => void` | - | Callback when rating changes |
+| `size` | `number` | `24` | Size of each star in pixels |
+| `className` | `string` | `""` | Additional CSS classes |
+| `readonly` | `boolean` | `false` | Makes the rating read-only |
+| `gap` | `number` | `4` | Space between stars |
+| `disabled` | `boolean` | `false` | Disables user interaction |
+| `activeColor` | `string` | `"#FFC107"` | Color of active stars |
+| `inactiveColor` | `string` | `"#E0E0E0"` | Color of inactive stars |
+| `direction` | `"vertical" \| "horizontal"` | `"horizontal"` | Layout direction |
+| `showTooltip` | `boolean` | `false` | Show tooltips on hover |
+| `tooltipLabels` | `string[]` | `[]` | Labels for tooltips |
+| `icon` | `React.ElementType` | - | Custom icon component |
+| `customSvgPath` | `string` | - | Custom SVG path for star shape |
 
-```css
-.custom-stars {
-  --active-color: #ff5733;
-  --inactive-color: #ccc;
-}
+## Accessibility Features
+
+- Uses semantic HTML with ARIA attributes
+- Keyboard navigation support:
+  - `Tab`: Navigate between stars
+  - `Enter`/`Space`: Select rating
+  - `ArrowLeft`/`ArrowRight`: Navigate between stars
+- Screen reader friendly with descriptive labels
+- Live region announces selected rating
+
+## Styling
+
+The component uses Tailwind CSS classes by default but can be customized using the `className` prop:
+
+```tsx
+<Stars
+  className="my-custom-stars"
+  // ... other props
+/>
 ```
 
-## ✅ Accessibility
+## Custom Icon Example
 
-- Uses `role="radiogroup"` and `role="radio"` for screen readers.
-- Supports full keyboard navigation (`Tab`, `Enter`, `Space`, `ArrowLeft`, `ArrowRight`).
-- `aria-label` and `aria-describedby` for improved accessibility.
+```tsx
+import { CustomStarIcon } from "./icons";
 
-## 📌 License
+<Stars
+  icon={CustomStarIcon}
+  count={5}
+  size={32}
+/>
+```
 
-MIT License © 2025 Your Ahmed Sultan
+## License
 
----
-
-🔗 **Contributions & Issues**: PRs are welcome! If you find any issues, feel free to open a GitHub issue. 🚀
-
+MIT © [Your Name]
