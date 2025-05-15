@@ -50,11 +50,18 @@ export const Stars = ({
     if (readonly || disabled) return;
 
     if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
       handleSetStars(index);
-    } else if (e.key === "ArrowRight") {
-      setFocusedIndex((prev) => (prev === count - 1 ? 0 : (prev ?? value) + 1));
-    } else if (e.key === "ArrowLeft") {
-      setFocusedIndex((prev) => (prev === 0 ? count - 1 : (prev ?? value) - 1));
+    } else if (e.key === "ArrowRight" || (e.key === "Tab" && !e.shiftKey)) {
+      e.preventDefault();
+      const nextIndex = (index + 1) % count;
+      setFocusedIndex(nextIndex);
+      (document.querySelector(`[data-star-index="${nextIndex}"]`) as HTMLElement)?.focus();
+    } else if (e.key === "ArrowLeft" || (e.key === "Tab" && e.shiftKey)) {
+      e.preventDefault();
+      const prevIndex = index === 0 ? count - 1 : index - 1;
+      setFocusedIndex(prevIndex);
+      (document.querySelector(`[data-star-index="${prevIndex}"]`) as HTMLElement)?.focus();
     }
   };
 
@@ -79,9 +86,11 @@ export const Stars = ({
           <span
             key={index}
             role="radio"
+            data-star-index={index}
             aria-checked={value === index + 1}
+            aria-label={`${index + 1} star${index + 1 > 1 ? 's' : ''}`}
             aria-describedby={showTooltip ? `tooltip-${index}` : undefined}
-            tabIndex={isFocused || value === index + 1 ? 0 : -1}
+            tabIndex={isFocused || (index === 0 && value === 0) || value === index + 1 ? 0 : -1}
             onMouseEnter={() => !readonly && !disabled && setHovered(index + 1)}
             onMouseLeave={() => !readonly && !disabled && setHovered(0)}
             onFocus={() => setFocusedIndex(index)}
@@ -89,7 +98,7 @@ export const Stars = ({
             onKeyDown={(e) => handleKeyDown(e, index)}
             onClick={() => handleSetStars(index)}
             className={cn(
-              "cursor-pointer transition relative focus:outline-none",
+              "cursor-pointer transition relative focus:outline-2 focus:outline-offset-2 focus:outline-blue-500",
               readonly && "pointer-events-none",
               disabled && "cursor-not-allowed"
             )}
