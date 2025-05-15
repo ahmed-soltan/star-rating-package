@@ -3,6 +3,7 @@ import { useState } from "react";
 import { cn } from "./lib/utils";
 
 export interface StarsProps {
+  icon: React.ElementType;
   count: number;
   value?: number;
   onChange?: (stars: number) => void;
@@ -16,9 +17,11 @@ export interface StarsProps {
   direction?: "vertical" | "horizontal";
   showTooltip?: boolean;
   tooltipLabels?: string[];
+  customSvgPath?: string;
 }
 
 export const Stars = ({
+  icon: Icon,
   count,
   value = 0,
   onChange,
@@ -32,6 +35,7 @@ export const Stars = ({
   disabled = false,
   showTooltip = false,
   tooltipLabels = [],
+  customSvgPath,
 }: StarsProps) => {
   const [hovered, setHovered] = useState(0);
   const [focusedIndex, setFocusedIndex] = useState<number | null>(null);
@@ -103,18 +107,26 @@ export const Stars = ({
                 {tooltipLabels[index]}
               </span>
             )}
-
-            <svg
-              role="img"
-              aria-label={`Rate ${index + 1} star${index + 1 > 1 ? "s" : ""}`}
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              width={size}
-              height={size}
-              fill={isHovered || isFilled ? activeColor : inactiveColor}
-            >
-              <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-            </svg>
+            {Icon ? (
+              <Icon />
+            ) : (
+              <svg
+                role="img"
+                aria-label={`Rate ${index + 1} star${index + 1 > 1 ? "s" : ""}`}
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width={size}
+                height={size}
+                fill={isHovered || isFilled ? activeColor : inactiveColor}
+              >
+                <path
+                  d={
+                    customSvgPath ||
+                    "M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                  }
+                />
+              </svg>
+            )}
           </span>
         );
       })}
