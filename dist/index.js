@@ -36,6 +36,7 @@ function cn(...inputs) {
 // src/Stars.tsx
 var import_jsx_runtime = require("react/jsx-runtime");
 var Stars = ({
+  icon: Icon,
   count,
   value = 0,
   onChange,
@@ -48,7 +49,8 @@ var Stars = ({
   direction = "horizontal",
   disabled = false,
   showTooltip = false,
-  tooltipLabels = []
+  tooltipLabels = [],
+  customSvgPath
 }) => {
   const [hovered, setHovered] = (0, import_react.useState)(0);
   const [focusedIndex, setFocusedIndex] = (0, import_react.useState)(null);
@@ -114,7 +116,7 @@ var Stars = ({
                     children: tooltipLabels[index]
                   }
                 ),
-                /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                Icon ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, {}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
                   "svg",
                   {
                     role: "img",
@@ -124,7 +126,12 @@ var Stars = ({
                     width: size,
                     height: size,
                     fill: isHovered || isFilled ? activeColor : inactiveColor,
-                    children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("path", { d: "M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" })
+                    children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
+                      "path",
+                      {
+                        d: customSvgPath || "M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                      }
+                    )
                   }
                 )
               ]

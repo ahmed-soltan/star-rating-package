@@ -3,7 +3,7 @@ import { useState } from "react";
 import { cn } from "./lib/utils";
 
 export interface StarsProps {
-  icon: React.ElementType;
+  icon?: React.ElementType;
   count: number;
   value?: number;
   onChange?: (stars: number) => void;

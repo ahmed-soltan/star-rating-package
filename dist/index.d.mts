@@ -1,6 +1,7 @@
 import * as react_jsx_runtime from 'react/jsx-runtime';
 
 interface StarsProps {
+    icon: React.ElementType;
     count: number;
     value?: number;
     onChange?: (stars: number) => void;
@@ -14,7 +15,8 @@ interface StarsProps {
     direction?: "vertical" | "horizontal";
     showTooltip?: boolean;
     tooltipLabels?: string[];
+    customSvgPath?: string;
 }
-declare const Stars: ({ count, value, onChange, size, className, readonly, gap, activeColor, inactiveColor, direction, disabled, showTooltip, tooltipLabels, }: StarsProps) => react_jsx_runtime.JSX.Element;
+declare const Stars: ({ icon: Icon, count, value, onChange, size, className, readonly, gap, activeColor, inactiveColor, direction, disabled, showTooltip, tooltipLabels, customSvgPath, }: StarsProps) => react_jsx_runtime.JSX.Element;
 
 export { Stars, type StarsProps };
