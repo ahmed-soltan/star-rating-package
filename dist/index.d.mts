@@ -1,7 +1,8 @@
 import * as react_jsx_runtime from 'react/jsx-runtime';
+import * as React from 'react';
 
 interface StarsProps {
-    icon: React.ElementType;
+    icon?: React.ElementType;
     count: number;
     value?: number;
     onChange?: (stars: number) => void;

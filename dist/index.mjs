@@ -9,6 +9,7 @@ function cn(...inputs) {
 }
 
 // src/Stars.tsx
+import * as React from "react";
 import { jsx, jsxs } from "react/jsx-runtime";
 var Stars = ({
   icon: Icon,
@@ -91,7 +92,13 @@ var Stars = ({
                     children: tooltipLabels[index]
                   }
                 ),
-                Icon ? /* @__PURE__ */ jsx(Icon, {}) : /* @__PURE__ */ jsx(
+                Icon ? React.cloneElement(/* @__PURE__ */ jsx(Icon, {}), {
+                  width: size,
+                  height: size,
+                  fill: isHovered || isFilled ? activeColor : inactiveColor,
+                  "aria-label": `Rate ${index + 1} star${index + 1 > 1 ? "s" : ""}`,
+                  role: "img"
+                }) : /* @__PURE__ */ jsx(
                   "svg",
                   {
                     role: "img",
